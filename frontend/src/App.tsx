@@ -1,5 +1,5 @@
-import CartaoVendas from "./componentes/cartaoVendas"
-import Header from "./componentes/header"
+import CartaoVendas from "./componentes/cartaoVendas";
+import Header from "./componentes/header";
 
 function App() {
     return(
@@ -16,5 +16,5 @@ function App() {
     )
 }
 
-export default App
+export default App;
 //Quando for usar mais de um elemento na mesma função precisa abrir <> e fechar com </>
