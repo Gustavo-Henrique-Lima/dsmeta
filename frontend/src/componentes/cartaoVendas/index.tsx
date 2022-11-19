@@ -14,11 +14,13 @@ function CartaoVendas() {
   const [maxData,setMaxData] =useState(max);
   const [vendas,setVendas]=useState<Vendas[]>([]);
   useEffect(()=>{
-    axios.get(`${BASE_URL}/vendas`)
+    const dMin=minData.toISOString().slice(0,10);
+    const dMax=maxData.toISOString().slice(0,10);
+    axios.get(`${BASE_URL}/vendas?minDate=${dMin}&maxDate=${dMax}`)
     .then(response=>{
       setVendas(response.data.content);
     });
-  },[]);
+  },[minData,maxData]);
   return (
     <div className="dsmeta-card">
       <h2 className="dsmeta-sales-title">Vendas</h2>
