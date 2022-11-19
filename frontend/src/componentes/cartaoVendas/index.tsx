@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Vendas } from "../../models/vendas";
+import { BASE_URL } from "../../utils/request";
 import BotaoNotificacao from '../botaoNotificacao';
 import './styles.css';
 
@@ -10,10 +12,11 @@ function CartaoVendas() {
   const max=new Date();
   const [minData,setMinData] =useState(min);
   const [maxData,setMaxData] =useState(max);
+  const [vendas,setVendas]=useState<Vendas[]>([]);
   useEffect(()=>{
-    axios.get("http://localhost:8081/vendas")
+    axios.get(`${BASE_URL}/vendas`)
     .then(response=>{
-      console.log(response.data)
+      setVendas(response.data.content);
     });
   },[]);
   return (
@@ -51,45 +54,25 @@ function CartaoVendas() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="show992">#341</td>
-              <td className="show576">08/07/2022</td>
-              <td>Anakin</td>
-              <td className="show992">15</td>
-              <td className="show992">11</td>
-              <td>R$ 55300.00</td>
-              <td>
-                <div className="dsmeta-red-btn-container">
-                  <BotaoNotificacao />
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td className="show992">#341</td>
-              <td className="show576">08/07/2022</td>
-              <td>Anakin</td>
-              <td className="show992">15</td>
-              <td className="show992">11</td>
-              <td>R$ 55300.00</td>
-              <td>
-                <div className="dsmeta-red-btn-container">
-                  <BotaoNotificacao />
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td className="show992">#341</td>
-              <td className="show576">08/07/2022</td>
-              <td>Anakin</td>
-              <td className="show992">15</td>
-              <td className="show992">11</td>
-              <td>R$ 55300.00</td>
-              <td>
-                <div className="dsmeta-red-btn-container">
-                  <BotaoNotificacao />
-                </div>
-              </td>
-            </tr>
+            {
+              vendas.map(venda=>{
+                return (
+                  <tr key={venda.id}>
+                    <td className="show992">{venda.id}</td>
+                    <td className="show576">{new Date(venda.date).toLocaleDateString()}</td>
+                    <td>{venda.sellerName}</td>
+                    <td className="show992">{venda.visited}</td>
+                    <td className="show992">{venda.deals}</td>
+                    <td>R$ {venda.amount.toFixed(2)}</td>
+                    <td>
+                      <div className="dsmeta-red-btn-container">
+                        <BotaoNotificacao />
+                      </div>
+                    </td>
+                </tr>
+                )
+              })
+            }
           </tbody>
         </table>
       </div>
